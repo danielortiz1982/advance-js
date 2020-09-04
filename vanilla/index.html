@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advance Vanilla</title>
+    <style>
+        html, body{
+            width: 100%;
+            height: 100%;
+            display: block;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+        .wrapper{
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            margin: 0 auto;
+            padding: 0;
+        }
+        #app{
+            width: 75%;
+            display: flex;
+            margin: 0 auto;
+            padding: 15px;
+        }
+        h1, h2{
+            text-align: left;
+            margin: 0 auto;
+            padding: 10px 0;
+            text-transform: uppercase;
+        }
+        .users{
+            padding: 15px;
+        }
+        .posts{
+            padding: 15px;
+        }
+    </style>
+</head>
+<body>
+    <div class="wrapper">
+        <div id="app"></div>
+    </div>
+    <script>
+        const app     = window.document.getElementById('app')
+        const wrapper = window.document.getElementsByClassName('wrapper')[0]
+
+        const getUsers = async () => {
+            const users = await fetch('https://jsonplaceholder.typicode.com/users')
+            const usersJSON = await users.json()
+            const usersDiv = window.document.createElement('div')
+            usersDiv.classList.add('users')
+
+            const usersHeader = window.document.createElement('h1')
+            usersHeader.classList.add('users-header')
+            usersHeader.innerText = 'Users'
+            usersDiv.appendChild(usersHeader)
+
+            usersJSON.forEach(element => {
+
+            const div = window.document.createElement('div')
+            div.classList.add('user')
+
+            const h2 = window.document.createElement('h2')
+            h2.classList.add('title')
+            h2.innerText = `Name: ${element.name}`
+
+            const usersname = window.document.createElement('p')
+            usersname.classList.add('username')
+            usersname.innerText = `Username: ${element.username}`
+
+            const email = window.document.createElement('p')
+            email.classList.add('email')
+            email.innerText = `Email: ${element.email}`
+
+            const address = window.document.createElement('p')
+            address.classList.add('address')
+            address.innerText = `Address: ${element.address.street}, ${element.address.city} ${element.address.zipcode}`
+
+            div.appendChild(h2)
+            div.appendChild(usersname)
+            div.appendChild(email)
+            div.appendChild(address)
+            usersDiv.appendChild(div)
+
+            })
+            app.appendChild(usersDiv)
+        }
+
+        const getPosts = async () => {
+            const posts = await fetch('https://jsonplaceholder.typicode.com/posts')
+            const postsJSON = await posts.json()
+            const postsDiv = window.document.createElement('div')
+            postsDiv.classList.add('posts')
+
+            const postsHeader = window.document.createElement('h1')
+            postsHeader.classList.add('posts-header')
+            postsHeader.innerText = 'posts'
+            postsDiv.appendChild(postsHeader)
+
+            postsJSON.forEach( element => {
+
+                const div = window.document.createElement('div')
+                div.classList.add('post')
+
+                const title = window.document.createElement('h2')
+                title.classList.add('post-title')
+                title.innerText = `${element.title}`
+
+                const postId = window.document.createElement('p')
+                postId.classList.add('post-id')
+                postId.innerText = `Post ID - ${element.id}`
+
+                const postBody = window.document.createElement('p')
+                postBody.classList.add('post-body')
+                postBody.innerText = element.body
+
+                div.appendChild(title)
+                div.appendChild(postId)
+                div.appendChild(postBody)
+
+                postsDiv.appendChild(div)
+            })
+            app.appendChild(postsDiv)
+        }
+
+        const initFn = () =>{
+            getUsers()
+            getPosts()
+        }
+
+        wrapper.addEventListener('load', initFn())
+    </script>
+</body>
+</html>
